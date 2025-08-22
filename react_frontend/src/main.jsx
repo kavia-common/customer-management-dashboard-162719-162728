@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import './index.css'
@@ -9,6 +9,7 @@ import CustomersList from './routes/customers/CustomersList.jsx'
 import CustomerDetail from './routes/customers/CustomerDetail.jsx'
 import CustomerCreate from './routes/customers/CustomerCreate.jsx'
 import { useAuthStore } from './store/auth.js'
+import { ErrorBoundary } from './ui/ErrorBoundary.jsx'
 
 // PUBLIC_INTERFACE
 function PrivateRoute({ children }) {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ErrorBoundary>
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </ErrorBoundary>
   </React.StrictMode>
 )
